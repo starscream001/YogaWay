@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zxx" class="no-js">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <head>
 	<!-- Mobile Specific Meta -->
@@ -124,40 +125,107 @@
 							<p>Ежедневно с 9:00 до 23:00</p>
 						</div>
 					</div>
-					<div class="single-contact-address d-flex flex-row">
-						<div class="icon">
-							<span class="lnr lnr-envelope"></span>
-						</div>
-						<div class="contact-details">
-							<h5>uwnyi2@gmail.com</h5>
-							<p>Пишите в любое удобное время!</p>
-						</div>
-					</div>
+<!--					<div class="single-contact-address d-flex flex-row">-->
+<!--						<div class="icon">-->
+<!--							<span class="lnr lnr-envelope"></span>-->
+<!--						</div>-->
+<!--						<div class="contact-details">-->
+<!--							<h5>uwnyi2@gmail.com</h5>-->
+<!--							<p>Пишите в любое удобное время!</p>-->
+<!--						</div>-->
+<!--					</div>-->
 				</div>
+<!--				<div class="col-lg-8">-->
+<!--					<form class="form-area contact-form text-right" id="myForm" action="mail.php" method="post">-->
+<!--						<div class="row">-->
+<!--							<div class="col-lg-6 form-group">-->
+<!--								<input name="name" placeholder="Как Вас зовут" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter your name'"-->
+<!--								 class="common-input mb-20 form-control" required="" type="text">-->
+
+<!--								<input name="email" placeholder="Введите вашу почту" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{1,63}$" onfocus="this.placeholder = ''"-->
+<!--								 onblur="this.placeholder = 'Enter email address'" class="common-input mb-20 form-control" required="" type="email">-->
+
+<!--								<input name="subject" placeholder="Какой у Вас вопрос?" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter subject'"-->
+<!--								 class="common-input mb-20 form-control" required="" type="text">-->
+<!--							</div>-->
+<!--							<div class="col-lg-6 form-group">-->
+<!--								<textarea class="common-textarea form-control" name="message" placeholder="Напишите пожалуйста подробнее" onfocus="this.placeholder = ''"-->
+<!--								 onblur="this.placeholder = 'Enter Messege'" required=""></textarea>-->
+<!--							</div>-->
+<!--							<div class="col-lg-12">-->
+<!--								<div class="alert-msg" style="text-align: left;"></div>-->
+<!--								<button class="genric-btn primary" style="float: right;">Отправить письмо</button>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--					</form>-->
+<!--				</div>-->
 				<div class="col-lg-8">
-					<form class="form-area contact-form text-right" id="myForm" action="mail.php" method="post">
+					<form class="form-area contact-form text-right" id="myForm">
 						<div class="row">
 							<div class="col-lg-6 form-group">
 								<input name="name" placeholder="Как Вас зовут" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter your name'"
-								 class="common-input mb-20 form-control" required="" type="text">
+									   class="common-input mb-20 form-control" required="" type="text">
 
-								<input name="email" placeholder="Введите вашу почту" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{1,63}$" onfocus="this.placeholder = ''"
-								 onblur="this.placeholder = 'Enter email address'" class="common-input mb-20 form-control" required="" type="email">
+								<input name="contact_info" placeholder="Укажите ваши контактные данные" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Contact information'" class="common-input mb-20 form-control" required="" type="text">
+
 
 								<input name="subject" placeholder="Какой у Вас вопрос?" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter subject'"
-								 class="common-input mb-20 form-control" required="" type="text">
+									   class="common-input mb-20 form-control" required="" type="text">
 							</div>
 							<div class="col-lg-6 form-group">
-								<textarea class="common-textarea form-control" name="message" placeholder="Напишите пожалуйста подробнее" onfocus="this.placeholder = ''"
-								 onblur="this.placeholder = 'Enter Messege'" required=""></textarea>
+                <textarea class="common-textarea form-control" name="message" placeholder="Напишите пожалуйста подробнее" onfocus="this.placeholder = ''"
+						  onblur="this.placeholder = 'Enter Messege'" required=""></textarea>
 							</div>
 							<div class="col-lg-12">
 								<div class="alert-msg" style="text-align: left;"></div>
-								<button class="genric-btn primary" style="float: right;">Отправить письмо</button>
+								<button class="genric-btn primary" style="float: right;" type="submit">Отправить сообщение</button>
 							</div>
 						</div>
 					</form>
 				</div>
+
+				<script>
+					$(document).ready(function () {
+						$('#myForm').submit(function (event) {
+							event.preventDefault(); // Отменяем стандартное поведение формы
+
+							const botToken = '6792043729:AAG7cPguS2m4Io0KWfj7yh-hjnXeqQOC3Ao'; // Замените на ваш токен
+							const chatId = '642040616'; // Замените на ID чата, куда будут приходить сообщения
+
+							let name = $('input[name=name]').val();
+							let email = $('input[name=contact_info]').val();
+							let subject = $('input[name=subject]').val();
+							let message = $('textarea[name=message]').val();
+
+							if (!name || !email || !subject || !message) {
+								$('.alert-msg').html('Пожалуйста, заполните все поля.');
+								return false;
+							}
+
+							$.ajax({
+								url: `https://api.telegram.org/bot${botToken}/sendMessage`,
+								method: 'POST',
+								dataType: 'json',
+								data: {
+									chat_id: chatId,
+									text: `Имя: ${name}\nEmail: ${email}\nТема: ${subject}\nСообщение:\n${message}`
+								},
+								success: function (response) {
+									if (response.ok) {
+										$('.alert-msg').html('Ваше сообщение успешно отправлено!');
+										$('#myForm')[0].reset(); // Очищаем форму после успешной отправки
+									} else {
+										$('.alert-msg').html('Что-то пошло не так. Попробуйте еще раз.');
+									}
+								},
+								error: function (xhr, status, error) {
+									console.error(xhr.responseText);
+									$('.alert-msg').html('Ошибка при отправке сообщения. Попробуйте позже.');
+								}
+							});
+						});
+					});
+				</script>
 			</div>
 		</div>
 	</section>
